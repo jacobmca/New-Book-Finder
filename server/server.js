@@ -6,14 +6,25 @@ const { authMiddleware } = require("./utils/auth");
 const db = require("./config/connection");
 const routes = require("./routes");
 
+const typeDefs = require('./schemas/typeDefs');
+const resolvers = require('./schemas/resolvers');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
 
 const startApolloServer = async () => {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: authMiddleware,
+  });
+
+  await server.start();
+  app.use(
+    '/graphql',
+    expressMiddleware(server)
+  );
+
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
 
