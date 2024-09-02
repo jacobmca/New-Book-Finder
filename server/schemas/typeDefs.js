@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('graphql-tag');
 
 const typeDefs = gql`
 
@@ -24,7 +24,7 @@ const typeDefs = gql`
     user: User
   }
 
-  type BookInput {
+  input BookInput {
     bookId: ID!
     authors: [String]
     description: String
