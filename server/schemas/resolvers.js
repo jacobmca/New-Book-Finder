@@ -45,10 +45,10 @@ const resolvers = {
     saveBook: async (parent, { bookData }, context) => {
       if (context.user) {
         const updatedUser = await User.findByIdAndUpdate (
-          context.user._id,
+          {_id: context.user._id},
           { $addToSet: { savedBooks: bookData } },
           { new: true }
-        ).select('-__v -password');
+        );
 
         return updatedUser;
       }
