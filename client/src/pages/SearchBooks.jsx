@@ -62,32 +62,28 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    console.log('book to save', bookToSave)
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    console.log('tolen', token)
     if (!token) {
       return false;
     }
 
     try {
-      // Execute the SAVE_BOOK mutation and pass the bookToSave data as variables
-      await saveBook({
-        variables: { bookData: {...bookToSave} },
+      const { data } = await saveBook({
+        variables: { bookData: { ...bookToSave } },
       });
-
-      // If successful, save the book ID to state
+      console.log(savedBookIds);
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }
   };
-
   return (
     <>
       <div className="text-light bg-dark p-5">

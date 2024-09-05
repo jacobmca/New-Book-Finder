@@ -1,6 +1,5 @@
-const { AuthenticationError } = require('apollo-server-express');
 const { User } = require('../models');
-const { signToken } = require('../utils/auth');
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
@@ -18,7 +17,7 @@ const resolvers = {
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
-      if(!user) {
+      if (!user) {
         throw new AuthenticationError('Incorrect credentials');
       }
 
@@ -43,18 +42,19 @@ const resolvers = {
 
     // Save a book to user's savedBooks
     saveBook: async (parent, { bookData }, context) => {
+      console.log('context', context.user)
       if (context.user) {
-        const updatedUser = await User.findByIdAndUpdate (
-          {_id: context.user._id},
-          { $addToSet: { savedBooks: bookData } },
+        const updatedUser = await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          { $push: { savedBooks: bookData } },
           { new: true }
         );
 
         return updatedUser;
       }
-      throw new AuthenticationError('You need to be logged in!');
-    },
 
+      throw AuthenticationError;
+    },
     // Remove a book from user's savedBooks
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
