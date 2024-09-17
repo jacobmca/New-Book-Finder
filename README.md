@@ -33,6 +33,10 @@ After downloading the program per the below, run the following commands in your 
 npm i
 npm run develop
 
+Alternatively, you can access the deployed link below:
+
+[Link to Deployed Program](https://new-book-finder-2.onrender.com/)
+
 Once the program is running, you should see the following home page:
 
 ![Screenshot](client/public/screenshot1.png)
